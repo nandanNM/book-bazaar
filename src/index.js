@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { connectToDB } from "./db/db.js";
 
 const app = express();
 dotenv.config();
@@ -17,8 +18,9 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
-  }),
+  })
 );
+connectToDB();
 
 app.get("/", (req, res) => {
   return res.send({ message: "Backend is running" });
