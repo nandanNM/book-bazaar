@@ -31,4 +31,4 @@ app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
 });
 app.use("/api/v1/auth", userRoutes);
-app.use("/api/v1/book", bookRoutes);
+app.use("/api/v1/books", bookRoutes);

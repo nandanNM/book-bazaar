@@ -16,29 +16,24 @@ import { addBookSchema } from "../schema/book.schema.js";
 const bookRoute = express.Router();
 
 bookRoute.post(
-  "/books",
+  "/add",
   validate(addBookSchema),
   isAuthenticated,
   authroizedRoles("ADMIN"),
   addBook
 );
 
-bookRoute.get("/books", getAllBooks);
+bookRoute.get("/get-all-books", getAllBooks);
 
-bookRoute.get("/books/:id", getBookById);
+bookRoute.get("/:id", getBookById);
 
 bookRoute.put(
-  "/books/:id",
+  "/:id",
   validate(addBookSchema),
   isAuthenticated,
   authroizedRoles("ADMIN"),
   updateBook
 );
-bookRoute.delete(
-  "/books/:id",
-  isAuthenticated,
-  authroizedRoles("ADMIN"),
-  deleteBook
-);
+bookRoute.delete("/:id", isAuthenticated, authroizedRoles("ADMIN"), deleteBook);
 
 export default bookRoute;

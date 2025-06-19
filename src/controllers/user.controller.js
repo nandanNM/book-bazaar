@@ -57,7 +57,6 @@ export const register = asyncHandler(async (req, res) => {
 
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.validateBody;
-  console.log("Login Request:", { email, password });
   const user = await User.findOne({ email }).select("+password");
 
   if (!user) {
@@ -65,7 +64,7 @@ export const login = asyncHandler(async (req, res) => {
   }
 
   const isMatch = await user.comparePassword(password);
-  console.log("Password Match:", isMatch);
+
   if (!isMatch) {
     throw new ApiError(401, "email or password incorrect");
   }

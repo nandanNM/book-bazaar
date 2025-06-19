@@ -31,8 +31,6 @@ export const isAuthenticated = asyncHandler(async (req, res, next) => {
 export const authroizedRoles = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      console.log(req.user.role);
-      console.log(roles);
       return next(
         new ApiError(403, "You do not have permission to access this resource")
       );
