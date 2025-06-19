@@ -3,16 +3,30 @@ import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, trim: true },
-    email: { type: String, required: true, trim: true, unique: true },
+    fullname: { type: String, required: true, trim: true, index: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+      index: true,
+    },
     password: { type: String, required: true, trim: true, select: false },
+    avater: {
+      type: String,
+      required: true,
+    },
+    avaterPublic_id: {
+      type: String,
+    },
     role: {
       type: String,
       enum: ["ADMIN", "USER"],
       default: "USER",
       uppercase: true,
     },
-    isVerified: { type: Boolean, default: false },
+    isVerified: { type: Boolean, default: true },
     isDeleted: { type: Boolean, default: false, select: false },
   },
   { timestamps: true }
@@ -28,7 +42,6 @@ userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// Remove sensitive fields from JSON output
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;

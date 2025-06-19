@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connectToDB } from "./db/db.js";
-
+import userRoutes from "./routes/user.routes.js";
 const app = express();
 dotenv.config();
 
@@ -29,3 +29,4 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
 });
+app.use("/api/v1/auth", userRoutes);
