@@ -3,7 +3,7 @@ import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/api-error.js";
 import { asyncHandler } from "../utils/async-handler.js";
 
-export const authMiddleware = asyncHandler(async (req, res, next) => {
+export const isAuthenticated = asyncHandler(async (req, res, next) => {
   const token =
     req.cookies["book-bazaar"] || req.headers.authorization?.split(" ")[1];
   //console.log("Token from cookies:", token);
