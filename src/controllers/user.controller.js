@@ -1,23 +1,26 @@
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import { asyncHandler } from "../utils/async-handler.js";
 import { User } from "../models/user.model.js";
+import { ApiKey } from "../models/apikey.model.js";
 import { ApiError } from "../utils/api-error.js";
 import { ApiResponse } from "../utils/api-response.js";
+import { getFutureDate } from "../utils/index.js";
 
 export const register = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.validateBody;
+  const { fullName, email, password } = req.validateBody;
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     throw new ApiError(409, "User already exists");
   }
   const newUser = await User.create({
-    name,
+    fullName,
     email,
     password,
   });
 
   if (!newUser) {
-    throw new ApiError(403, "user register failed");
+    throw new ApiError(403, "User registration failed");
   }
   const cookieOptions = {
     httpOnly: true,
@@ -28,7 +31,7 @@ export const register = asyncHandler(async (req, res) => {
   const token = jwt.sign(
     {
       id: newUser._id,
-      name: newUser.name,
+      fullName,
       email: newUser.email,
       role: newUser.role,
     },
@@ -39,18 +42,30 @@ export const register = asyncHandler(async (req, res) => {
   return res
     .status(201)
     .cookie("book-bazaar", token, cookieOptions)
-    .json(new ApiResponse(201, newUser, "user registered successfully"));
+    .json(
+      new ApiResponse({
+        statusCode: 201,
+        data: {
+          id: newUser._id,
+          fullName,
+          email: newUser.email,
+        },
+        message: "User registered successfully",
+      })
+    );
 });
 
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.validateBody;
-  const user = await User.findOne({ email });
+  console.log("Login Request:", { email, password });
+  const user = await User.findOne({ email }).select("+password");
 
   if (!user) {
     throw new ApiError(404, "User not exist, please register or signup");
   }
 
   const isMatch = await user.comparePassword(password);
+  console.log("Password Match:", isMatch);
   if (!isMatch) {
     throw new ApiError(401, "email or password incorrect");
   }
@@ -62,7 +77,12 @@ export const login = asyncHandler(async (req, res) => {
   };
 
   const token = jwt.sign(
-    { id: user._id, name: user.name, email: user.email, role: user.role },
+    {
+      id: user._id,
+      fullname: user.fullName,
+      email: user.email,
+      role: user.role,
+    },
     process.env.JWT_SECRET,
     { expiresIn: "24h" }
   );
@@ -71,14 +91,65 @@ export const login = asyncHandler(async (req, res) => {
     .status(201)
     .cookie("book-bazaar", token, cookieOptions)
     .json(
-      new ApiResponse(
-        201,
-        {
+      new ApiResponse({
+        statusCode: 201,
+        data: {
           id: user._id,
-          name: user.name,
-          email,
+          fullName: user.fullName,
+          email: user.email,
         },
-        "user logged in successfully"
-      )
+        message: "User logged in successfully",
+      })
     );
+});
+
+export const logout = asyncHandler(async (req, res) => {
+  res
+    .status(200)
+    .clearCookie("book-bazaar")
+    .json(
+      new ApiResponse({
+        Message: "User logged out successfully",
+      })
+    );
+});
+
+export const getMe = asyncHandler((req, res) => {
+  return res.status(200).json(
+    new ApiResponse({
+      statusCode: 200,
+      data: {
+        id: req.user.id,
+        fullName: req.user.fullName,
+        email: req.user.email,
+        role: req.user.role,
+      },
+      message: "User fetched successfully",
+    })
+  );
+});
+
+export const generateApiKey = asyncHandler(async (req, res, next) => {
+  const userId = req.user.id;
+  const genApiKey = crypto.randomBytes(32).toString("hex");
+
+  const apiKey = await ApiKey.create({
+    userId,
+    apiKey: genApiKey,
+    expiresAt: getFutureDate("15d"),
+  });
+
+  if (!apiKey) {
+    return next(new ApiError(403, "Api key genration failed"));
+  }
+
+  return res.status(201).json(
+    new ApiResponse({
+      statusCode: 201,
+      data: {
+        apiKey: apiKey.apiKey,
+        expiresAt: apiKey.expiresAt,
+      },
+    })
+  );
 });

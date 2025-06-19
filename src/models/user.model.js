@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
-    fullname: { type: String, required: true, trim: true, index: true },
+    fullName: { type: String, required: true, trim: true, index: true },
     email: {
       type: String,
       required: true,
@@ -15,7 +15,6 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true, trim: true, select: false },
     avater: {
       type: String,
-      required: true,
     },
     avaterPublic_id: {
       type: String,
@@ -40,13 +39,6 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
-};
-
-userSchema.methods.toJSON = function () {
-  const obj = this.toObject();
-  delete obj.password;
-  delete obj.__v;
-  return obj;
 };
 
 export const User = mongoose.model("User", userSchema);

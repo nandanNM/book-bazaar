@@ -23,5 +23,4 @@ const apiKeySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const ApiKey = mongoose.model("ApiKey", apiKeySchema);
-export default ApiKey;
+export const ApiKey = mongoose.model("ApiKey", apiKeySchema);
