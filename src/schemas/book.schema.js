@@ -22,7 +22,6 @@ export const addBookSchema = z.object({
   price: z
     .number({ required_error: "Price is required" })
     .min(50, "Price must be at least 50"),
-  stock: z.number().int().nonnegative().default(0),
   category: z
     .enum(["FICTION", "NON_FICTION", "COMIC", "EDUCATION", "SCIENCE", "OTHER"])
     .default("OTHER"),
