@@ -83,7 +83,6 @@ export const updateBook = asyncHandler(async (req, res) => {
     imageLinks,
     language,
     price,
-    stock,
     category,
   } = req.validateBody;
   const updatedBook = await Book.findByIdAndUpdate(
@@ -99,7 +98,6 @@ export const updateBook = asyncHandler(async (req, res) => {
       imageLinks,
       language,
       price,
-      stock,
       category,
     },
     { new: true }
