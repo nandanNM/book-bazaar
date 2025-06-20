@@ -79,7 +79,7 @@ npm run dev
 
 ## 🧪 API Documentation (Postman)
 
-A complete Postman collection is available [here](https://.postman.co/workspace/My-Workspace~69796cdf-baa2-4ee2-839f-54d32839350c/folder/32584961-4fb26b51-f1d2-41b9-98b1-90a5333f7b8d?action=share&creator=32584961&ctx=documentation) _(add link to collection or export file)_.
+A complete Postman collection is available [here](https://web.postman.co/workspace/69796cdf-baa2-4ee2-839f-54d32839350c/folder/32584961-4fb26b51-f1d2-41b9-98b1-90a5333f7b8d?action=share&source=copy-link&creator=32584961&ctx=documentation)
 
 ## 📌 Important Notes
 
@@ -98,4 +98,4 @@ A complete Postman collection is available [here](https://.postman.co/workspace/
 **Nandan Manna**  
 🛠 Full Stack Developer  
 📍 Kalyani, West Bengal  
-💻 [GitHub](https://github.com/nandanNM) | [LinkedIn](https://linkedin.com/in/coder_nandan)
+💻 [GitHub](https://github.com/nandanNM) | [LinkedIn](https://linkedin.com/in/codernandan)
