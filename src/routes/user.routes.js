@@ -7,7 +7,7 @@ import {
   register,
 } from "../controllers/user.controller.js";
 import { validate } from "../utils/index.js";
-import { registerUserSchema, loginUserSchema } from "../schema/user.schema.js";
+import { registerUserSchema, loginUserSchema } from "../schemas/user.schema.js";
 import { isAuthenticated } from "../middlewares/auth.middlewares.js";
 
 const userRoute = express.Router();
