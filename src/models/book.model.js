@@ -22,7 +22,6 @@ const bookSchema = new mongoose.Schema(
       required: true,
       min: 50,
     },
-    stock: { type: Number, default: 0 },
     category: {
       type: String,
       enum: [
