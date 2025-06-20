@@ -2,7 +2,6 @@ import { ApiError } from "./api-error.js";
 
 export const validate = schema => (req, res, next) => {
   const result = schema.safeParse(req.body);
-  console.log("Validation result:", req.body, result);
   if (!result.success) {
     return next(new ApiError(400, "Validation failed", result.error.format()));
   }
