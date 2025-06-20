@@ -11,7 +11,7 @@ import {
   isAuthenticated,
 } from "../middlewares/auth.middlewares.js";
 import { validate } from "../utils/index.js";
-import { addBookSchema } from "../schema/book.schema.js";
+import { addBookSchema } from "../schemas/book.schema.js";
 
 const bookRoute = express.Router();
 
