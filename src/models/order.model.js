@@ -7,19 +7,12 @@ const orderSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-
     books: [
       {
         bookId: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Book",
           required: true,
-        },
-        quantity: {
-          type: Number,
-          required: true,
-          default: 1,
-          min: 1,
         },
         priceAtPurchase: {
           type: Number,
@@ -44,13 +37,11 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
     paymentStatus: {
       type: String,
       enum: ["PENDING", "PAID", "FAILED"],
       default: "PENDING",
     },
-
     totalAmount: {
       type: Number,
       required: true,
